@@ -1,39 +1,45 @@
-# 1️⃣ NOME DO WORKFLOW
 name: Deploy Next.js to Linux Server
 
-# 2️⃣ EVENTO QUE DISPARA O WORKFLOW
 on:
-  push:                  # Executa quando houver push no branch principal
+  push:
     branches:
       - main
-  workflow_dispatch:     # Permite executar manualmente pelo GitHub UI
+  workflow_dispatch:
 
-# 3️⃣ DEFINIÇÃO DOS JOBS (TAREFAS)
 jobs:
   deploy:
-    runs-on: ubuntu-latest   # Ambiente de execução (máquina virtual Ubuntu)
-    
+    runs-on: ubuntu-latest
+
     steps:
-      # 4️⃣ ETAPA 1: FAZER CHECKOUT DO CÓDIGO
+      # 1️⃣ Checkout do código
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      # 5️⃣ ETAPA 2: CONFIGURAR NODE.JS
+      # 2️⃣ Configurar Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'          # Cache de dependências para acelerar builds
+          cache: 'npm'
 
-      # 6️⃣ ETAPA 3: INSTALAR DEPENDÊNCIAS
+      # 3️⃣ Instalar dependências
       - name: Instalar dependências
         run: npm ci
 
-      # 7️⃣ ETAPA 4: BUILDAR O PROJETO
+      # 4️⃣ Buildar o projeto Next.js
       - name: Buildar o projeto Next.js
         run: npm run build
 
-      # 8️⃣ ETAPA 5: ENVIAR ARQUIVOS PARA O SERVIDOR
+      # 5️⃣ Criar diretório no servidor (se ainda não existir)
+      - name: Criar diretório remoto
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: mkdir -p /dados/webapps/ecommerce-ui
+
+      # 6️⃣ Enviar artefatos via SCP
       - name: Enviar build via SCP (SSH)
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -41,14 +47,17 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: |
-                .next/**
-                package.json
-                package-lock.json
-                public/**
-                next.config.js
-          target: "/dados/webapps/ecommerce-ui/"
-      
-      # 9️⃣ ETAPA 6: EXECUTAR COMANDOS NO SERVIDOR
+            .next/**
+            package.json
+            package-lock.json
+            public/**
+            next.config.js
+          target: /dados/webapps/ecommerce-ui/
+          overwrite: true
+          rm: true
+          debug: true
+
+      # 7️⃣ Reiniciar aplicação via PM2
       - name: Executar comandos remotos (restart PM2)
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -57,4 +66,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /dados/webapps/ecommerce-ui
+            npm ci --omit=dev
             pm2 restart ecommerce-ui || pm2 start npm --name "ecommerce-ui" -- start
