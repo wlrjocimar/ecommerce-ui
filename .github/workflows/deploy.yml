@@ -42,10 +42,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: |
             .next/**
-            package.json
-            package-lock.json
-            public/**
-            next.config.js
+            
           target: /dados/webapps/ecommerce-ui/
           overwrite: true
           rm: true
