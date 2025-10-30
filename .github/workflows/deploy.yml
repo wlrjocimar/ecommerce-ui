@@ -44,7 +44,7 @@ jobs:
            package.json
            package-lock.json
            public/**
-           next.config.js
+           next.config.js"
           target: "/dados/webapps/ecommerce-ui/.next"
       
       # 9️⃣ ETAPA 6: EXECUTAR COMANDOS NO SERVIDOR
