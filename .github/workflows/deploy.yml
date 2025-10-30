@@ -1,0 +1,55 @@
+# 1️⃣ NOME DO WORKFLOW
+name: Deploy Next.js to Linux Server
+
+# 2️⃣ EVENTO QUE DISPARA O WORKFLOW
+on:
+  push:                  # Executa quando houver push no branch principal
+    branches:
+      - main
+  workflow_dispatch:     # Permite executar manualmente pelo GitHub UI
+
+# 3️⃣ DEFINIÇÃO DOS JOBS (TAREFAS)
+jobs:
+  deploy:
+    runs-on: ubuntu-latest   # Ambiente de execução (máquina virtual Ubuntu)
+    
+    steps:
+      # 4️⃣ ETAPA 1: FAZER CHECKOUT DO CÓDIGO
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 5️⃣ ETAPA 2: CONFIGURAR NODE.JS
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'          # Cache de dependências para acelerar builds
+
+      # 6️⃣ ETAPA 3: INSTALAR DEPENDÊNCIAS
+      - name: Instalar dependências
+        run: npm ci
+
+      # 7️⃣ ETAPA 4: BUILDAR O PROJETO
+      - name: Buildar o projeto Next.js
+        run: npm run build
+
+      # 8️⃣ ETAPA 5: ENVIAR ARQUIVOS PARA O SERVIDOR
+      - name: Enviar build via SCP (SSH)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".next/**"
+          target: "/dados/webapps/ecommerce-ui/.next"
+      
+      # 9️⃣ ETAPA 6: EXECUTAR COMANDOS NO SERVIDOR
+      - name: Executar comandos remotos (restart PM2)
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /dados/webapps/ecommerce-ui
+            pm2 restart ecommerce-ui || pm2 start npm --name "ecommerce-ui" -- start
