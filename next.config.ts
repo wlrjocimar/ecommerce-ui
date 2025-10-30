@@ -20,7 +20,8 @@ console.log(`Loaded environment: ${appEnv} (${envFile})`);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  basePath:'/ecommerce-ui'
+   basePath:'/ecommerce-ui',
+   assetPrefix: '/ecommerce-ui/' // 👈 adiciona prefixo para assets
   // env: {
   //   NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   // },
