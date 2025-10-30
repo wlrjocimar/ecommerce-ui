@@ -40,11 +40,12 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: ".next/**
-           package.json
-           package-lock.json
-           public/**
-           next.config.js"
+          source: |
+            .next/**
+             package.json
+             package-lock.json
+             public/**
+             next.config.js
           target: "/dados/webapps/ecommerce-ui/.next"
       
       # 9️⃣ ETAPA 6: EXECUTAR COMANDOS NO SERVIDOR
