@@ -1,6 +1,6 @@
 
 //TEMPORARY DATABESE HERE
-
+"use client"
 import { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import { ProductsType, ProductType } from "../types";

@@ -1,4 +1,4 @@
-"use client"
+
 import Image from "next/image";
 import ProductList from "../components/ProductList";
 
@@ -7,7 +7,7 @@ const  HomePage=()=> {
     <div className=''>
 
         <div className="relative aspect-3/1 mb-12" >
-          <Image src="/featured.png" alt="" fill/>
+          <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/featured.png`} alt="" fill/>
         </div>
         <ProductList/>
 
