@@ -20,22 +20,23 @@ console.log(`Loaded environment: ${appEnv} (${envFile})`);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-   basePath:'/ecommerce-ui',
-   images: {
-    // Configurações específicas para imagens
-   // domains: ['exemplo.com'], // se usar imagens externas
-    path: '/ecommerce-ui/_next/image', // importante com basePath
-    // unoptimized: true, // Mantenha false para otimização
-    // Configurações específicas para PNG
-    formats: ['image/webp', 'image/avif'],
-  },
-  // Importante para produção
-  trailingSlash: false, // ou true, mas seja consistente
-  assetPrefix:'/ecommerce-ui',
+  //  basePath:'/ecommerce-ui',
+  //   images: {
+  // //   // Configurações específicas para imagens
+  //   domains: ['flexybot.com.br'], // se usar imagens externas
+  //     //path: '/ecommerce-ui/_next/image', // importante com basePath
+  // //   // unoptimized: true, // Mantenha false para otimização
+  // //   // Configurações específicas para PNG
+  // //   formats: ['image/webp', 'image/avif'],
+  //  },
+  // assetPrefix: '/ecommerce-ui/' 
+  // // Importante para produção
+  // trailingSlash: false, // ou true, mas seja consistente
+  // assetPrefix:'/ecommerce-ui',
   //  assetPrefix: '/ecommerce-ui/' // 👈 adiciona prefixo para assets
   // env: {
   //   NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  // },
+   //},
 };
 
 export default nextConfig;
