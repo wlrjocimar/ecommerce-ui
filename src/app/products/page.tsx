@@ -1,8 +1,8 @@
+import ProductList from '@/src/components/ProductList';
+import Image from 'next/image';
+import React from 'react'
 
-import Image from "next/image";
-import ProductList from "../components/ProductList";
-
-const  HomePage=async({searchParams}:{searchParams:Promise<{category:string}>})=> {
+const page = async({searchParams}:{searchParams:Promise<{category:string}>})=> {
 
   const category = (await searchParams).category
   return (
@@ -11,7 +11,7 @@ const  HomePage=async({searchParams}:{searchParams:Promise<{category:string}>})=
         <div className="relative aspect-3/1 mb-12" >
           <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/featured.png`} alt="" fill/>
         </div>
-        <ProductList category={category} params="homepage"/>
+        <ProductList category={category} params="products"/>
 
         
 
@@ -22,4 +22,4 @@ const  HomePage=async({searchParams}:{searchParams:Promise<{category:string}>})=
   );
 }
 
-export default HomePage;
+export default page
