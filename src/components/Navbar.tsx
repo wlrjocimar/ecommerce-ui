@@ -9,7 +9,7 @@ const Navbar = () => {
     <nav className="w-full flex items-center justify-between border-b border-gray-200 pb-4">
         {/* LEFT */}
         <Link href='' className="flex items-center">
-            <Image src="/logo.png" alt="Tren" width={36} height={36} className="w-6 h-6 md:w-9 md:h-9" />
+            <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/logo.png`} alt="Tren" width={36} height={36} className="w-6 h-6 md:w-9 md:h-9" />
             <p className="text-md font-medium tracking-wider">TRENDLAMA.</p>
         </Link>
         

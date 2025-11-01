@@ -6,11 +6,12 @@ import axios from "axios";
 import { ProductsType, ProductType } from "../types";
 import Categories from "./Categories";
 import ProductCard from "./ProductCard";
+import Link from "next/link";
 
 
 
 
-const ProductList = () => {
+const ProductList = ({category}:{category:string}) => {
 
     const [products,setProducts]=useState<ProductsType>([]);
     useEffect(()=>{
@@ -28,14 +29,20 @@ const ProductList = () => {
     <div className="w-full">
        
 
-      <Suspense fallback={<div>Carregando categorias...</div>}>
+      
         <Categories />
-      </Suspense>
+     
         <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12'>
             {products.map(product=>(
                 <ProductCard product={product} key={product.id}/>
             ))}
         </div>
+         <Link 
+            href={category ? `/products/category=${category}`: "/products"}
+            className="flex justify-end mt-4 underline text-sm text-gray-500 "
+            >
+              View all products
+          </Link>   
     </div>
   )
 }
