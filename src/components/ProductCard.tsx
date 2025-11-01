@@ -4,7 +4,7 @@ import Link from "next/link"
 import { ProductType } from "../types"
 import Image from "next/image"
 import { ShoppingCart, Target } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 
@@ -25,10 +25,19 @@ const ProductCard = ({product}:{product:ProductType}) => {
 
 
   const handleProductType = ({type,value}:{type:"size" | "color",value:string})=>{
-    console.log("type",type)
-    console.log("value",value)
+      setProductTypes((prev)=>(
+        {...prev,[type]:value}
+      ))
+
+      
+      
 
   }
+
+  useEffect(()=>{
+    console.log("ProductTypes",productTypes)
+
+  },[productTypes])
 
 
   return (
@@ -68,7 +77,12 @@ const ProductCard = ({product}:{product:ProductType}) => {
             <span className="text-gray-500">Color</span>
             <div className="flex items-center gap-2">
               {product.colors.map(color=>(
-                <div key={color} className="">
+                <div
+                  key={color} className={`cursor-pointer border-1  ${productTypes.color===color ? "border-gray-400":"border-y-gray-200"} rounded-full p-[1.2px]`}
+                  onClick={()=>{
+                    handleProductType({type:"color",value:color})
+                  }}
+                 >
                   <div className='w-[14px] h-[14px] rounded-full' style={{backgroundColor:color}}/>
                   
                 </div>
