@@ -1,6 +1,6 @@
 "use client"
 
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CartItemsType } from "../types";
 import { useRouter } from "next/navigation";
@@ -28,6 +28,7 @@ const CartClient = () => {
 const [cartItems, setCartItems] = useState<CartItemsType>([]);
 const searchParams = useSearchParams();
 const router = useRouter();
+const pathName = usePathname();
 const activeStep = parseInt(searchParams.get("step") || "1");
 
 useEffect(()=>{
@@ -45,9 +46,11 @@ useEffect(()=>{
 
 },[])
 
-const handleSelect = (step:number)=>{
-    console.log("Step slected", step)
-    router.push("/")
+const handleSelect = (step:string)=>{
+    const params = new URLSearchParams(searchParams);
+    params.set("step",step || "1")
+   
+    router.push(`${pathName}?${params.toString()}`,{scroll:false})
 
 }
 
@@ -59,8 +62,8 @@ const handleSelect = (step:number)=>{
       {/* STEPS */}
       <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap16">
         {steps.map(step=>(
-            <div onClick={()=>handleSelect(step.id)} className={`flex items-center cursor-pointer gap-2 border-b-2 pb-4 ${step.id===activeStep ? "border-gray-800" : "border-gray-200"}`} key={step.id}>
-                <div className="flex rounded-full w-6 h-6 bg-black text-white items-center justify-center">
+            <div onClick={()=>handleSelect(String(step.id))} className={`flex items-center cursor-pointer gap-2 border-b-2 pb-4 ${step.id===activeStep ? "border-gray-800" : "border-gray-200"}`} key={step.id}>
+                <div className={`flex rounded-full w-6 h-6 bg-black text-white p-4 items-center justify-center ${step.id===activeStep ? "bg-gray-800": "bg-gray-400"}`} >
                     {step.id}
                 </div>
                 <span className=" text-gray-400">{step.title}</span>
