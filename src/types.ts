@@ -20,3 +20,14 @@ export type CategoryType={
     icon:string;
 
 }
+
+
+export type CartItemType = ProductType & {
+    quantity:number;
+    selectedSize:string;
+    selectedColor:string
+
+}
+
+
+export type CartItemsType = CartItemType[];

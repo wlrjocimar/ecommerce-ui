@@ -18,7 +18,7 @@ const ProductList = ({category,params}:{category:string,params:"homepage" | "pro
 
     const [products,setProducts]=useState<ProductsType>([]);
     useEffect(()=>{
-     axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ecommerce/products`)
+     axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ecommerce-api/products`)
        .then((response) => {
         console.log("Response from request", response.data)
         setProducts(response.data)})
