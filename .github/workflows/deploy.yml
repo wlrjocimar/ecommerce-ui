@@ -59,7 +59,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /dados/webapps/ecommerce-ui
-            git pull -o main
+            git fetch
+            git reset --hard origin/main
             npm install
             pm2 stop ecommerce-ui
             npm run build
