@@ -22,10 +22,11 @@ export type CategoryType={
 }
 
 
-export type CartItemType = ProductType & {
+export type CartItemType = {
     quantity:number;
     selectedSize:string;
     selectedColor:string
+    product:ProductType
 
 }
 
